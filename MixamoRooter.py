@@ -1,7 +1,7 @@
 bl_info = {
     "name": "MixamoRooter",
     "author": "Erfan",
-    "version": (1, 3),
+    "version": (1, 4),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > MixamoRooter",
     "description": "Injects root bone and maps Hips/Root channels for active Mixamo characters and animations in UE5",
@@ -131,7 +131,7 @@ class MIXAMO_OT_FixAnimation(bpy.types.Operator):
 
 class VIEW3D_PT_MixamoRootPanel(bpy.types.Panel):
     bl_label = "MixamoRooter"
-    bl_idname = "VIEW3D_PT_Mixamo_root_panel"
+    bl_idname = "VIEW3D_PT_mixamo_root_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
     bl_category = "MixamoRooter"
