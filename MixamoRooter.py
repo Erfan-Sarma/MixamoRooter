@@ -1,9 +1,9 @@
 bl_info = {
-    "name": "MaxamoRooter",
+    "name": "MixamoRooter",
     "author": "Erfan",
     "version": (1, 3),
     "blender": (4, 0, 0),
-    "location": "View3D > Sidebar > MaxamoRooter",
+    "location": "View3D > Sidebar > MixamoRooter",
     "description": "Injects root bone and maps Hips/Root channels for active Mixamo characters and animations in UE5",
     "category": "Animation",
 }
@@ -129,12 +129,12 @@ class MIXAMO_OT_FixAnimation(bpy.types.Operator):
             return {'CANCELLED'}
 
 
-class VIEW3D_PT_MaxamoRootPanel(bpy.types.Panel):
-    bl_label = "MaxamoRooter"
-    bl_idname = "VIEW3D_PT_maxamo_root_panel"
+class VIEW3D_PT_MixamoRootPanel(bpy.types.Panel):
+    bl_label = "MixamoRooter"
+    bl_idname = "VIEW3D_PT_Mixamo_root_panel"
     bl_space_type = 'VIEW_3D'
     bl_region_type = 'UI'
-    bl_category = "MaxamoRooter"
+    bl_category = "MixamoRooter"
 
     def draw(self, context):
         layout = self.layout
@@ -151,7 +151,7 @@ class VIEW3D_PT_MaxamoRootPanel(bpy.types.Panel):
 classes = (
     MIXAMO_OT_FixCharacter,
     MIXAMO_OT_FixAnimation,
-    VIEW3D_PT_MaxamoRootPanel,
+    VIEW3D_PT_MixamoRootPanel,
 )
 
 def register():
