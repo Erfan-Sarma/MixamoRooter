@@ -1,10 +1,10 @@
 bl_info = {
     "name": "MixamoRooter",
     "author": "Erfan",
-    "version": (1, 4),
+    "version": (1, 5),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > MixamoRooter",
-    "description": "Injects root bone and maps Hips/Root channels for active Mixamo characters and animations in UE5",
+    "description": "Injects root bone, maps Hips/Root channels, and fixes loop snapping for active Mixamo characters and animations in UE5",
     "category": "Animation",
 }
 
@@ -52,7 +52,7 @@ class MIXAMO_OT_FixCharacter(bpy.types.Operator):
 class MIXAMO_OT_FixAnimation(bpy.types.Operator):
     bl_idname = "mixamo.fix_animation"
     bl_label = "Fix Animation Root Motion"
-    bl_description = "Maps Hips X -> Root X and Hips Z -> Root Y for Unreal Engine root motion"
+    bl_description = "Maps Hips X -> Root X, Hips Z -> Root Y, and fixes hip loop snapping for Unreal Engine"
 
     def execute(self, context):
         if bpy.context.object and bpy.context.object.mode != 'OBJECT':
@@ -83,6 +83,11 @@ class MIXAMO_OT_FixAnimation(bpy.types.Operator):
                 action = armature.animation_data.action if armature.animation_data else None
                 
                 if action:
+                    start_f = int(action.frame_range[0])
+                    end_f = int(action.frame_range[1])
+                    context.scene.frame_start = start_f
+                    context.scene.frame_end = end_f
+                    
                     hips_path = f'pose.bones["{hips_name}"].location'
                     root_path = 'pose.bones["root"].location'
                     
@@ -93,6 +98,7 @@ class MIXAMO_OT_FixAnimation(bpy.types.Operator):
                             return action.fcurves.find(path, index=index) or action.fcurves.new(path, index=index)
 
                     fc_hips_x = get_or_create_fcurve(hips_path, 0)
+                    fc_hips_y = get_or_create_fcurve(hips_path, 1)
                     fc_hips_z = get_or_create_fcurve(hips_path, 2)
                     
                     fc_root_x = get_or_create_fcurve(root_path, 0)
@@ -104,7 +110,7 @@ class MIXAMO_OT_FixAnimation(bpy.types.Operator):
                         for pt in fc_hips_x.keyframe_points:
                             fc_root_x.keyframe_points.insert(pt.co[0], pt.co[1])
                         fc_hips_x.keyframe_points.clear()
-                        fc_hips_x.keyframe_points.insert(0.0, 0.0)
+                        fc_hips_x.keyframe_points.insert(float(start_f), 0.0)
                         
                     # Transfer Hips Z -> Root Y
                     if fc_hips_z and len(fc_hips_z.keyframe_points) > 0 and fc_root_y:
@@ -112,11 +118,16 @@ class MIXAMO_OT_FixAnimation(bpy.types.Operator):
                         for pt in fc_hips_z.keyframe_points:
                             fc_root_y.keyframe_points.insert(pt.co[0], pt.co[1])
                         fc_hips_z.keyframe_points.clear()
-                        fc_root_z.keyframe_points.insert(0.0, 0.0)
+                        fc_hips_z.keyframe_points.insert(float(start_f), 0.0)
+                        
+                    # Fix Hips Y location loop snapping
+                    if fc_hips_y and len(fc_hips_y.keyframe_points) > 1:
+                        first_val = fc_hips_y.keyframe_points[0].co[1]
+                        fc_hips_y.keyframe_points[-1].co[1] = first_val
                         
                     action.update_tag()
                     bpy.context.view_layer.update()
-                    self.report({'INFO'}, "SUCCESS: Animation root motion fixed!")
+                    self.report({'INFO'}, "SUCCESS: Animation root motion and hip loop fixed!")
                     return {'FINISHED'}
                 else:
                     self.report({'WARNING'}, "Root bone created, but no action found on armature.")
