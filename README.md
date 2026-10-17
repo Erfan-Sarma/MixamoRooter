@@ -12,15 +12,17 @@ For this purpose, the best practice I found was to handle the structural bone in
 ---
 
 ## ✨ Features
-*   **Character Setup:** Instantly generates a `root` bone at the world origin (`0,0,0`) and parents the `Hips` bone beneath it.
-*   **Animation Curve Mapping:** Remaps keyframes cleanly (Hips X $\rightarrow$ Root X, Hips Z $\rightarrow$ Root Y) to establish proper root motion tracks for UE5.
-*   **Convenient UI Panel:** Easily accessible right from the 3D Viewport sidebar (`N-Panel > MixamoRooter`).
+* **Character Setup:** Instantly generates a `root` bone at the world origin (`0,0,0`) and parents the `Hips` bone beneath it.
+* **Animation Curve Mapping:** Remaps keyframes cleanly (Hips X $\rightarrow$ Root X, Hips Z $\rightarrow$ Root Y) to establish proper root motion tracks for UE5.
+* **Hip Loop Snapping Correction:** Automatically aligns the start and end values of the hip bone's vertical curve to ensure smooth, snap-free looping.
+* **Precise Frame Range Locking:** Conforms scene frames to the active action range automatically.
+* **Convenient UI Panel:** Easily accessible right from the 3D Viewport sidebar (`N-Panel > MixamoRooter`).
 
 ---
 
 ## 📦 Looking for Batch Processing?
-If you need to process dozens of animations or characters at once, check out the bulk version:
-👉 **[MixamoRooter (Bulk) Repository](https://github.com/Erfan-Sarma/Mixamo-Rooter-Bulk.git)**
+If you need to process dozens of animations or characters at once, check out the batch version:
+👉 **[BatchMixamoRooter Repository](https://github.com/Erfan-Sarma/Batch-Mixam-Rooter.git)**
 
 ---
 
