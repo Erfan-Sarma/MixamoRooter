@@ -1,6 +1,6 @@
 bl_info = {
     "name": "MixamoRooter",
-    "author": "Erfan",
+    "author": "Erfan-Sarma",
     "version": (1, 5),
     "blender": (4, 0, 0),
     "location": "View3D > Sidebar > MixamoRooter",
